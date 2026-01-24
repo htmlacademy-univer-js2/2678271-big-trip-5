@@ -10,7 +10,7 @@ export default class TripPresenter {
     this.filtersContainer = document.querySelector('.trip-controls__filters');
     this.eventsContainer = document.querySelector('.trip-events');
     this.mainContainer = document.querySelector('.trip-main');
-    this.pointsListContainer = null; 
+    this.pointsListContainer = null;
   }
 
   createPointsList() {
