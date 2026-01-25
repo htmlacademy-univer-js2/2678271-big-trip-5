@@ -4,17 +4,21 @@ import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
 import InfoView from '../view/trip-info-view.js';
 import PointListView from '../view/point-list-view.js';
-
 import { render, RenderPosition } from '../render.js';
+import Model from '../model/trip-model.js';
 
 export default class TripPresenter {
   constructor() {
     this.filtersContainer = document.querySelector('.trip-controls__filters');
     this.eventsContainer = document.querySelector('.trip-events');
     this.mainContainer = document.querySelector('.trip-main');
+    
+    this.model = new Model();
   }
 
   init() {
+    const { points, destinations, offers } = this.model;
+    
     render(new InfoView(), this.mainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView(), this.filtersContainer);
     render(new SortView(), this.eventsContainer, RenderPosition.AFTERBEGIN);
@@ -23,9 +27,12 @@ export default class TripPresenter {
     render(pointListView, this.eventsContainer);
     const pointsListContainer = pointListView.getElement();
 
-    render(new EditPointView(), pointsListContainer);
-    for (let i = 0; i < 3; i++) {
-      render(new PointView(), pointsListContainer);
-    }
+    const edPointView = new EditPointView({point: points[0], destinations, offers});
+    render(edPointView, pointsListContainer);
+
+    points.forEach((point) => {
+      const pointView = new PointView({point, destinations, offers});
+      render(pointView, pointsListContainer);
+    });
   }
 }
