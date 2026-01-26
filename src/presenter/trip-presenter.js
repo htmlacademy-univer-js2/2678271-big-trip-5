@@ -5,15 +5,14 @@ import PointView from '../view/point-view.js';
 import InfoView from '../view/trip-info-view.js';
 import PointListView from '../view/point-list-view.js';
 import { render, RenderPosition } from '../render.js';
-import Model from '../model/trip-model.js';
 
 export default class TripPresenter {
-  constructor() {
+  constructor(tripModel) {
+    this.model = tripModel;
+
     this.filtersContainer = document.querySelector('.trip-controls__filters');
     this.eventsContainer = document.querySelector('.trip-events');
     this.mainContainer = document.querySelector('.trip-main');
-
-    this.model = new Model();
   }
 
   init() {
