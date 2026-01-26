@@ -12,13 +12,13 @@ export default class TripPresenter {
     this.filtersContainer = document.querySelector('.trip-controls__filters');
     this.eventsContainer = document.querySelector('.trip-events');
     this.mainContainer = document.querySelector('.trip-main');
-    
+
     this.model = new Model();
   }
 
   init() {
     const { points, destinations, offers } = this.model;
-    
+
     render(new InfoView(), this.mainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView(), this.filtersContainer);
     render(new SortView(), this.eventsContainer, RenderPosition.AFTERBEGIN);

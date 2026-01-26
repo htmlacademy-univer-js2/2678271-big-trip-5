@@ -25,11 +25,11 @@ function createPointTemplate(point, destination, typeOffers) {
 
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
 
-  const selectedOffers = typeOffers.filter(offer => selectedOfferIds.includes(offer.id));
+  const selectedOffers = typeOffers.filter((offer) => selectedOfferIds.includes(offer.id));
   const offersTemplate = selectedOffers.length > 0 ? `
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      ${selectedOffers.map(offer => `
+      ${selectedOffers.map((offer) => `
         <li class="event__offer">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
@@ -81,9 +81,8 @@ export default class PointView {
   }
 
   getTemplate() {
-    const destination = this.destinations.find(dest => dest.id === this.point.destination);
+    const destination = this.destinations.find((dest) => dest.id === this.point.destination);
     const typeOffers = this.offers[this.point.type] || [];
-    
     return createPointTemplate(this.point, destination, typeOffers);
   }
 

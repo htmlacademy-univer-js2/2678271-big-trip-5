@@ -40,15 +40,15 @@ const LOREM_IPSUM_SENTENCES = [
 ];
 
 const OFFERS = {
-    taxi: ['Extra luggage', 'Child seat'],
-    bus: ['Wi-Fi', 'Snacks'],
-    train: ['First class', 'Dining car'],
-    ship: ['Cabin upgrade', 'Excursion'],
-    drive: ['GPS', 'Child seat'],
-    flight: ['Add luggage', 'Priority check-in'],
-    'check-in': ['Breakfast included', 'Late check-out'],
-    sightseeing: ['Guide', 'Skip the line'],
-    restaurant: ['Wine pairing', 'Dessert']
+  taxi: ['Extra luggage', 'Child seat'],
+  bus: ['Wi-Fi', 'Snacks'],
+  train: ['First class', 'Dining car'],
+  ship: ['Cabin upgrade', 'Excursion'],
+  drive: ['GPS', 'Child seat'],
+  flight: ['Add luggage', 'Priority check-in'],
+  'check-in': ['Breakfast included', 'Late check-out'],
+  sightseeing: ['Guide', 'Skip the line'],
+  restaurant: ['Wine pairing', 'Dessert']
 };
 
 export {

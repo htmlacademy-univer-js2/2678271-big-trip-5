@@ -3,7 +3,6 @@ import {EVENT_TYPES} from '../const.js';
 import {
   formatDate,
   formatTime,
-  formatDateTime
 } from '../utils.js';
 
 function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
@@ -14,27 +13,23 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
     dateTo = new Date(),
     basePrice = 0,
     offers: selectedOfferIds = [],
-    isFavorite = false
   } = point;
 
-  const destination = destinations.find(dest => dest.id === destinationId) || destinations[0] || {name: '', description: '', pictures: []};
-  
+  const destination = destinations.find((dest) => dest.id === destinationId) || destinations[0] || {name: '', description: '', pictures: []};
   const typeOffers = offers[type] || [];
-  const selectedOffers = typeOffers.filter(offer => selectedOfferIds.includes(offer.id));
+  const selectedOffers = typeOffers.filter((offer) => selectedOfferIds.includes(offer.id));
 
   const dateFormatted = formatDate(dateFrom);
-  const dateTimeFrom = formatDateTime(dateFrom);
-  const dateTimeTo = formatDateTime(dateTo);
   const timeFrom = formatTime(dateFrom);
   const timeTo = formatTime(dateTo);
 
-  const eventTypesTemplate = EVENT_TYPES.map(eventType => `
+  const eventTypesTemplate = EVENT_TYPES.map((eventType) => `
     <div class="event__type-item">
-      <input 
-        id="event-type-${eventType}-1" 
-        class="event__type-input visually-hidden" 
-        type="radio" 
-        name="event-type" 
+      <input
+        id="event-type-${eventType}-1"
+        class="event__type-input visually-hidden"
+        type="radio"
+        name="event-type"
         value="${eventType}"
         ${eventType === type ? 'checked' : ''}
       >
@@ -44,7 +39,7 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
     </div>
   `).join('');
 
-  const destinationsTemplate = destinations.map(dest => `
+  const destinationsTemplate = destinations.map((dest) => `
     <option value="${dest.name}"></option>
   `).join('');
 
@@ -52,15 +47,15 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
     <section class="event__section event__section--offers">
       <h3 class="event__section-title event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        ${typeOffers.map((offer, index) => `
+        ${typeOffers.map((offer) => `
           <div class="event__offer-selector">
-            <input 
-              class="event__offer-checkbox visually-hidden" 
-              id="event-offer-${offer.id}" 
-              type="checkbox" 
-              name="event-offer-${offer.id}" 
+            <input
+              class="event__offer-checkbox visually-hidden"
+              id="event-offer-${offer.id}"
+              type="checkbox"
+              name="event-offer-${offer.id}"
               value="${offer.id}"
-              ${selectedOffers.some(selected => selected.id === offer.id) ? 'checked' : ''}
+              ${selectedOffers.some((selected) => selected.id === offer.id) ? 'checked' : ''}
             >
             <label class="event__offer-label" for="event-offer-${offer.id}">
               <span class="event__offer-title">${offer.title}</span>
@@ -80,7 +75,7 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
       ${destination.pictures.length > 0 ? `
         <div class="event__photos-container">
           <div class="event__photos-tape">
-            ${destination.pictures.map(pic => `
+            ${destination.pictures.map((pic) => `
               <img class="event__photo" src="${pic.src}" alt="${pic.description}">
             `).join('')}
           </div>
@@ -112,12 +107,12 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
             <label class="event__label event__type-output" for="event-destination-1">
               ${type.charAt(0).toUpperCase() + type.slice(1)}
             </label>
-            <input 
-              class="event__input event__input--destination" 
-              id="event-destination-1" 
-              type="text" 
-              name="event-destination" 
-              value="${destination.name}" 
+            <input
+              class="event__input event__input--destination"
+              id="event-destination-1"
+              type="text"
+              name="event-destination"
+              value="${destination.name}"
               list="destination-list-1"
               required
             >
@@ -128,20 +123,20 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
 
           <div class="event__field-group event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input 
-              class="event__input event__input--time" 
-              id="event-start-time-1" 
-              type="text" 
-              name="event-start-time" 
+            <input
+              class="event__input event__input--time"
+              id="event-start-time-1"
+              type="text"
+              name="event-start-time"
               value="${dateFormatted} ${timeFrom}"
             >
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input 
-              class="event__input event__input--time" 
-              id="event-end-time-1" 
-              type="text" 
-              name="event-end-time" 
+            <input
+              class="event__input event__input--time"
+              id="event-end-time-1"
+              type="text"
+              name="event-end-time"
               value="${dateFormatted} ${timeTo}"
             >
           </div>
@@ -151,12 +146,12 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input 
-              class="event__input event__input--price" 
-              id="event-price-1" 
-              type="number" 
-              name="event-price" 
-              value="${basePrice}" 
+            <input
+              class="event__input event__input--price"
+              id="event-price-1"
+              type="number"
+              name="event-price"
+              value="${basePrice}"
               min="0"
               required
             >

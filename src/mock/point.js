@@ -14,18 +14,16 @@ import {
   generatePictures
 } from '../utils.js';
 
-const generateDestinations = () => {
-  return CITIES.map((city) => ({
-    id: city.toLowerCase().replace(/\s+/g, '-'),
-    name: city,
-    description: getRandomDescription(LOREM_IPSUM_SENTENCES),
-    pictures: generatePictures()
-  }));
-};
+const generateDestinations = () => CITIES.map((city) => ({
+  id: city.toLowerCase().replace(/\s+/g, '-'),
+  name: city,
+  description: getRandomDescription(LOREM_IPSUM_SENTENCES),
+  pictures: generatePictures()
+}));
 
 const generateOffers = () => {
   const offers = {};
-  
+
   EVENT_TYPES.forEach((type) => {
     const typeOffers = OFFERS[type];
     if (typeOffers) {
@@ -36,7 +34,7 @@ const generateOffers = () => {
       }));
     }
   });
-  
+
   return offers;
 };
 

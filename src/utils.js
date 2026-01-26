@@ -4,13 +4,9 @@ import {
   LOREM_IPSUM_SENTENCES
 } from './const.js';
 
-const getRandomArrayElement = (items) => {
-  return items[Math.floor(Math.random() * items.length)];
-};
+const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
-const getRandomInteger = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const getRandomDate = () => {
   const now = new Date();
@@ -30,11 +26,11 @@ const getRandomEndDate = (startDate) => {
 const getRandomDescription = () => {
   const sentencesCount = getRandomInteger(1, 5);
   const selectedSentences = [];
-  
+
   for (let i = 0; i < sentencesCount; i++) {
     selectedSentences.push(getRandomArrayElement(LOREM_IPSUM_SENTENCES));
   }
-  
+
   return selectedSentences.join(' ');
 };
 
@@ -51,13 +47,9 @@ const generatePictures = () => {
   }));
 };
 
-const getRandomType = () => {
-  return getRandomArrayElement(EVENT_TYPES);
-};
+const getRandomType = () => getRandomArrayElement(EVENT_TYPES);
 
-const getRandomCity = () => {
-  return getRandomArrayElement(CITIES);
-};
+const getRandomCity = () => getRandomArrayElement(CITIES);
 
 const MONTHS = [
   'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
@@ -70,26 +62,22 @@ const formatDate = (date) => {
   return `${month} ${day}`;
 };
 
-const formatTime = (date) => {
-  return date.toTimeString().slice(0, 5);
-};
+const formatTime = (date) => date.toTimeString().slice(0, 5);
 
 const calculateDuration = (dateFrom, dateTo) => {
   const diffInMs = dateTo - dateFrom;
   const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-  
+
   const hours = Math.floor(diffInMinutes / 60);
   const minutes = diffInMinutes % 60;
-  
+
   if (hours > 0) {
     return `${hours}H ${minutes.toString().padStart(2, '0')}M`;
   }
   return `${minutes}M`;
 };
 
-const formatDateTime = (date) => {
-  return date.toISOString().slice(0, 16);
-};
+const formatDateTime = (date) => date.toISOString().slice(0, 16);
 
 export {
   getRandomArrayElement,
