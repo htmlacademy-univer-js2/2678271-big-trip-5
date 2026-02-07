@@ -16,6 +16,7 @@ import {
 
 export default class TripPresenter {
   #pointPresenters = new Map();
+  #currentSortType = 'day';
 
   constructor(tripModel) {
     this.model = tripModel;
@@ -48,14 +49,27 @@ export default class TripPresenter {
       return;
     }
 
-    render(new SortView(), this.eventsContainer, RenderPosition.AFTERBEGIN);
-
+    render(new SortView({onSortChange: this.#handleSortChange}), this.eventsContainer, RenderPosition.AFTERBEGIN);
+    const sortedPoints = this.#sortPoints(this.model.points, 'day');
     this.#clearPoints();
-    this.#renderPoints(points, destinations, offers);
+    this.#renderPoints(sortedPoints, destinations, offers);
   }
 
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleSortChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    this.#currentSortType = sortType;
+
+    const sortedPoints = this.#sortPoints(this.model.points, sortType);
+
+    this.#clearPoints();
+    this.#renderPoints(sortedPoints, this.model.destinations, this.model.offers);
+
   };
 
   #handlePointChange = (updatedPoint) => {
@@ -86,4 +100,31 @@ export default class TripPresenter {
       this.#pointPresenters.set(point.id, pointPresenter);
     });
   }
+
+  #sortPoints = (points, sortType) => {
+    const sortedPoints = [...points];
+
+    switch (sortType) {
+      case 'day':
+        sortedPoints.sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom));
+        break;
+
+      case 'time':
+        sortedPoints.sort((a, b) => {
+          const durationA = new Date(a.dateTo) - new Date(a.dateFrom);
+          const durationB = new Date(b.dateTo) - new Date(b.dateFrom);
+          return durationB - durationA;
+        });
+        break;
+
+      case 'price':
+        sortedPoints.sort((a, b) => b.basePrice - a.basePrice);
+        break;
+
+      default:
+        sortedPoints.sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom));
+        break;
+    }
+    return sortedPoints;
+  };
 }
