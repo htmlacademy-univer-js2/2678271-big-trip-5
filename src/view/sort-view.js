@@ -5,7 +5,7 @@ function createSortTemplate() {
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
         <div class="trip-sort__item  trip-sort__item--day">
           <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day">
-          <label class="trip-sort__btn" for="sort-day">Day</label>
+          <label class="trip-sort__btn" for="sort-day" data-sort-type="day">Day</label>
         </div>
 
         <div class="trip-sort__item  trip-sort__item--event">
@@ -15,12 +15,12 @@ function createSortTemplate() {
 
         <div class="trip-sort__item  trip-sort__item--time">
           <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-          <label class="trip-sort__btn" for="sort-time">Time</label>
+          <label class="trip-sort__btn" for="sort-time" data-sort-type="time">Time</label>
         </div>
 
         <div class="trip-sort__item  trip-sort__item--price">
           <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price" checked>
-          <label class="trip-sort__btn" for="sort-price">Price</label>
+          <label class="trip-sort__btn" for="sort-price" data-sort-type="price">Price</label>
         </div>
 
         <div class="trip-sort__item  trip-sort__item--offer">
@@ -32,7 +32,24 @@ function createSortTemplate() {
 }
 
 export default class SortView extends AbstractView {
+  #handleSortChange = null;
+
+  constructor({onSortChange}) {
+    super();
+    this.#handleSortChange = onSortChange;
+
+    this.element.querySelectorAll('.trip-sort__btn')
+      .forEach((input) => {
+        input.addEventListener('click', this.#SortHandlerChange);
+      });
+  }
+
   get template() {
     return createSortTemplate();
   }
+
+  #SortHandlerChange = (evt) => {
+    const sortType = evt.currentTarget.dataset.sortType;
+    this.#handleSortChange(sortType);
+  };
 }
