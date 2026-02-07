@@ -88,6 +88,8 @@ export default class PointView extends AbstractView {
     this.#typeOffers = typeOffers || [];
     this.#handleArrowClick = onArrowClick;
     this.#handleStarClick = onStarClick;
+
+    this.setHandlers();
   }
 
   get template() {
