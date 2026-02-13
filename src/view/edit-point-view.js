@@ -3,7 +3,7 @@ import {
   formatDate,
   formatTime,
 } from '../utils.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 
 function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
@@ -173,30 +173,76 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
   `;
 }
 
-export default class EditPointView extends AbstractView{
+export default class EditPointView extends AbstractStatefulView{
   #point = null;
   #destinations = null;
   #offers = null;
   #handleFormSubmit = null;
   #handleArrowClick = null;
 
+
   constructor({point = null, destinations = [], offers = {}, onFormSubmit, onArrowClick}) {
     super();
-    this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleArrowClick = onArrowClick;
 
-    this.element.querySelector('.event--edit')
-      .addEventListener('submit', this.#formSubmitHandler);
+    this._setState({
+      ...point,
+    });
 
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#ArrowClickHandler);
   }
 
   get template() {
-    return createEditPointTemplate(this.#point, this.#destinations, this.#offers);
+    return createEditPointTemplate(this._state, this.#destinations, this.#offers);
+  }
+
+  _createElement() {
+    const element = super._createElement();
+    this._restoreHandlers();
+    return element;
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event--edit')
+      .addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#ArrowClickHandler);
+
+    this.#setTypeChangeHandler();
+    this.#setDestinationChangeHandler();
+  }
+
+  #setTypeChangeHandler() {
+    const typeInputs = this.element.querySelectorAll('input[name="event-type"]');
+    typeInputs.forEach((input) => {
+      input.addEventListener('change', (evt) => {
+        evt.preventDefault();
+        const newType = evt.target.value;
+
+        this.updateElement({
+          ...this._state,
+          type: newType,
+          offers: []
+        });
+      });
+    });
+  }
+
+  #setDestinationChangeHandler() {
+    const destinationInput = this.element.querySelector('.event__input--destination');
+    destinationInput.addEventListener('change', (evt) => {
+      evt.preventDefault();
+      const destinationName = evt.target.value;
+      const newDestination = this.#destinations.find((dest) => dest.name === destinationName);
+      if (newDestination) {
+        this.updateElement({
+          ...this._state,
+          destination: newDestination.id
+        });
+      }
+    });
   }
 
   #formSubmitHandler = (evt) => {
