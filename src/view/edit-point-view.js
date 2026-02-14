@@ -41,7 +41,7 @@ function createEditPointTemplate(point = {}, destinations = [], offers = {}) {
   `).join('');
 
   const destinationsTemplate = destinations.map((dest) => `
-    <option value="${dest.name}"></option>
+    <option value="${dest.id}">${dest.name}</option>
   `).join('');
 
   const offersTemplate = typeOffers.length > 0 ? `
@@ -222,7 +222,6 @@ export default class EditPointView extends AbstractStatefulView{
         const newType = evt.target.value;
 
         this.updateElement({
-          ...this._state,
           type: newType,
           offers: []
         });
@@ -234,14 +233,11 @@ export default class EditPointView extends AbstractStatefulView{
     const destinationInput = this.element.querySelector('.event__input--destination');
     destinationInput.addEventListener('change', (evt) => {
       evt.preventDefault();
-      const destinationName = evt.target.value;
-      const newDestination = this.#destinations.find((dest) => dest.name === destinationName);
-      if (newDestination) {
-        this.updateElement({
-          ...this._state,
-          destination: newDestination.id
-        });
-      }
+      const destinationId = evt.target.value;
+
+      this.updateElement({
+        destination: destinationId
+      });
     });
   }
 
