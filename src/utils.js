@@ -61,15 +61,32 @@ const calculateDuration = (dateFrom, dateTo) => {
   const start = dayjs(dateFrom);
   const end = dayjs(dateTo);
   const diffInMinutes = end.diff(start, 'minute');
-  const hours = Math.floor(diffInMinutes / 60);
+  const days = Math.floor(diffInMinutes / (60 * 24));
+  const hours = Math.floor((diffInMinutes % (60 * 24)) / 60);
   const minutes = diffInMinutes % 60;
 
-  if (hours === 0) {
-    return `${minutes}M`;
-  } else if (minutes === 0) {
-    return `${hours}H`;
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const formattedHours = hours.toString().padStart(2, '0');
+  const formattedDays = days.toString().padStart(2, '0');
+
+  if (days > 0) {
+    if (hours === 0 && minutes === 0) {
+      return `${formattedDays}D 00H 00M`;
+    } else if (minutes === 0) {
+      return `${formattedDays}D ${formattedHours}H 00M`;
+    } else if (hours === 0) {
+      return `${formattedDays}D 00H ${formattedMinutes}M`;
+    } else {
+      return `${formattedDays}D ${formattedHours}H ${formattedMinutes}M`;
+    }
+  } else if (hours > 0) {
+    if (minutes === 0) {
+      return `${formattedHours}H 00M`;
+    } else {
+      return `${formattedHours}H ${formattedMinutes}M`;
+    }
   } else {
-    return `${hours}H ${minutes}M`;
+    return `${minutes}M`;
   }
 };
 
