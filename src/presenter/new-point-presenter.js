@@ -1,6 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import EditPointView from '../view/edit-point-view.js';
-import {nanoid} from 'nanoid';
 import {USER_ACTION, UPDATE_TYPE} from '../const.js';
 import { putSortUpper } from '../utils.js';
 
@@ -17,6 +16,13 @@ export default class NewPointPresenter {
     this.#handleDataChange = onDataChange;
     this.#destinations = destinations;
     this.#offers = offers;
+  }
+
+  setSaving() {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
   }
 
   init() {
@@ -56,9 +62,8 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       USER_ACTION.ADD_TASK,
       UPDATE_TYPE.MINOR,
-      {id: nanoid(), ...point},
+      {...point},
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
@@ -71,4 +76,16 @@ export default class NewPointPresenter {
       this.destroy();
     }
   };
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
 }
